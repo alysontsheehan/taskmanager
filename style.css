@@ -1,130 +1,158 @@
-/* General Styles */
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #ffffff; /* white background */
-  color: #333;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
 }
 
-header {
-  background-color: #998269; /* Soft tan */
-  color: #444;
-  padding: 20px;
-  text-align: center;
+h2 {
+    color: #333;
+    text-align: center;
 }
 
-h1 {
-  font-size: 2rem;
-  margin: 0;
+.page {
+    display: none;
 }
 
-nav button {
-  background-color: #b5b59a; /* olive green */
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin: 5px;
-  border-radius: 5px;
-  font-size: 1rem;
+#navigation {
+    background-color: #4CAF50;
+    padding: 10px;
+    text-align: center;
 }
 
-nav button:hover {
-  background-color: #a0cfbb;
+#navigation button {
+    margin: 0 10px;
+    padding: 10px;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
 }
 
-.day-selector {
-  display: flex;
-  justify-content: space-evenly;
-  margin: 20px 0;
+#navigation button:hover {
+    background-color: #45a049;
 }
 
-.day-toggle {
-  background-color: #b3e0ff; /* Pastel blue */
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
+#date-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
-.day-toggle:hover {
-  background-color: #80b3ff;
+#date-toggle button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.filters {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+#date-toggle button:hover {
+    background-color: #45a049;
 }
 
-.filters label {
-  font-size: 1rem;
+#schedule-container {
+    display: flex;
+    flex-direction: column;
 }
 
-.filters select {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+#schedule-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-.schedule {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
-  margin-top: 20px;
+#schedule-container div {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    border-radius: 5px;
 }
 
-.schedule .hour-block {
-  background-color: #e0e7ff; /* Light pastel block */
-  padding: 10px;
-  border-radius: 5px;
+#task-form-container {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.schedule .task {
-  background-color: #ffe0e0; /* Soft pastel red */
-  padding: 5px;
-  border-radius: 5px;
-  margin-bottom: 5px;
+#brain-dump-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
-#brain-dump-view {
-  padding: 20px;
+.brain-dump-module {
+    width: 45%;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.brain-dump {
-  display: flex;
-  justify-content: space-between;
+.add-task-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.module {
-  background-color: #f9e0ff; /* Light pastel purple */
-  padding: 15px;
-  border-radius: 8px;
-  width: 22%;
+.add-task-btn:hover {
+    background-color: #45a049;
 }
 
-.module h3 {
-  margin-top: 0;
+#brain-dump-form label {
+    margin-top: 10px;
+    display: block;
 }
 
-.module ul {
-  list-style: none;
-  padding: 0;
+#brain-dump-form input,
+#brain-dump-form select,
+#brain-dump-form textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
 }
 
-.module .add-task {
-  background-color: #ffb3e6;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-top: 10px;
+button[type="submit"], button[type="button"] {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
 }
 
-.module .add-task:hover {
-  background-color: #ff80cc;
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
 }
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+button[type="button"]:hover {
+    background-color: #e53935;
+}
+
+.task {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.task input[type="checkbox"] {
+    margin-left: 10px;
+}
+
