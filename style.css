@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f9f9; /* Soft pastel background */
+  background-color: #ffffff; /* white background */
   color: #333;
   margin: 0;
   padding: 0;
@@ -9,7 +9,7 @@ body {
 }
 
 header {
-  background-color: #cce7ff; /* Soft blue */
+  background-color: #998269; /* Soft tan */
   color: #444;
   padding: 20px;
   text-align: center;
@@ -21,7 +21,7 @@ h1 {
 }
 
 nav button {
-  background-color: #ffb3d9; /* Pastel pink */
+  background-color: #b5b59a; /* olive green */
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -32,7 +32,7 @@ nav button {
 }
 
 nav button:hover {
-  background-color: #ff80b3;
+  background-color: #a0cfbb;
 }
 
 .day-selector {
