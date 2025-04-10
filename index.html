@@ -1,173 +1,128 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>ADHD Task Manager</title>
-
-  <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Planner & Brain Dump</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <header>
-
-    <h1>My Task Manager</h1>
-
-    <nav>
-
-      <button id="toggle-schedule">Schedule View</button>
-
-      <button id="toggle-brain-dump">Brain Dump</button>
-
-    </nav>
-
-  </header>
-
-
-
-  <main id="schedule-view">
-
-    <section class="day-selector">
-
-      <button class="day-toggle" id="today-btn">Today<br><span class="date"></span></button>
-
-      <button class="day-toggle" id="tomorrow-btn">Tomorrow<br><span class="date"></span></button>
-
-      <button class="day-toggle" id="day-3-btn">Day 3<br><span class="date"></span></button>
-
-      <button class="day-toggle" id="day-4-btn">Day 4<br><span class="date"></span></button>
-
-      <button class="day-toggle" id="day-5-btn">Day 5<br><span class="date"></span></button>
-
-      <button class="day-toggle" id="day-6-btn">Day 6<br><span class="date"></span></button>
-
-    </section>
-
-
-
-    <section class="filters">
-
-      <label>Category:
-
-        <select id="category-filter">
-
-          <option value="all">All</option>
-
-          <option value="home">Home</option>
-
-          <option value="work">Work</option>
-
-          <option value="personal">Personal</option>
-
-          <option value="other">Other</option>
-
-        </select>
-
-      </label>
-
-      <label>Hour Range:
-
-        <select id="hour-filter">
-
-          <option value="all">All Hours</option>
-
-          <option value="morning">Morning (6AM-12PM)</option>
-
-          <option value="afternoon">Afternoon (12PM-6PM)</option>
-
-          <option value="evening">Evening (6PM-12AM)</option>
-
-        </select>
-
-      </label>
-
-      <label>View:
-
-        <select id="view-toggle">
-
-          <option value="hourly">Hourly</option>
-
-          <option value="list">List</option>
-
-        </select>
-
-      </label>
-
-    </section>
-
-
-
-    <section class="schedule">
-
-      <!-- JS will render the hourly schedule here -->
-
-    </section>
-
-  </main>
-
-
-
-  <main id="brain-dump-view" style="display: none;">
-
-    <h2>Brain Dump</h2>
-
-    <section class="brain-dump">
-
-      <div class="module" data-category="home">
-
-        <h3>Home</h3>
-
-        <ul class="task-list"></ul>
-
-        <button class="add-task">+ Add Task</button>
-
-      </div>
-
-      <div class="module" data-category="personal">
-
-        <h3>Personal</h3>
-
-        <ul class="task-list"></ul>
-
-        <button class="add-task">+ Add Task</button>
-
-      </div>
-
-      <div class="module" data-category="work">
-
-        <h3>Work</h3>
-
-        <ul class="task-list"></ul>
-
-        <button class="add-task">+ Add Task</button>
-
-      </div>
-
-      <div class="module" data-category="other">
-
-        <h3>Other</h3>
-
-        <ul class="task-list"></ul>
-
-        <button class="add-task">+ Add Task</button>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-
-  <script src="script.js"></script> <!-- Link to your JavaScript file -->
-
+    <!-- Navigation (for toggling between pages) -->
+    <div id="navigation">
+        <button onclick="togglePage('schedule')">Schedule</button>
+        <button onclick="togglePage('brain-dump')">Brain Dump</button>
+    </div>
+
+    <!-- Schedule Page -->
+    <div id="schedule-page" class="page">
+        <h2>Schedule</h2>
+
+        <!-- Date Navigation Toggle Buttons -->
+        <div id="date-toggle">
+            <button onclick="showDate('yesterday')">Yesterday</button>
+            <button onclick="showDate('today')">Today</button>
+            <button onclick="showDate('tomorrow')">Tomorrow</button>
+            <button onclick="showDate('next')">Next 5 Days</button>
+        </div>
+
+        <div id="schedule-view">
+            <div id="schedule-header">
+                <span>Time</span>
+                <span>Task</span>
+            </div>
+
+            <!-- Schedule (empty for now, tasks will be added dynamically) -->
+            <div id="schedule-container"></div>
+
+            <!-- Add Task Form -->
+            <div id="task-form-container">
+                <h3>Add New Task</h3>
+                <form id="task-form">
+                    <label for="task-title">Title:</label>
+                    <input type="text" id="task-title" required>
+
+                    <label for="task-description">Description:</label>
+                    <textarea id="task-description" required></textarea>
+
+                    <label for="task-date">Date:</label>
+                    <input type="date" id="task-date">
+
+                    <label for="task-time">Time:</label>
+                    <input type="time" id="task-time">
+
+                    <label for="task-category">Category:</label>
+                    <select id="task-category">
+                        <option value="home">Home</option>
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="other">Other</option>
+                    </select>
+
+                    <button type="submit">Add Task</button>
+                    <button type="button" onclick="closeTaskForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brain Dump Page -->
+    <div id="brain-dump-page" class="page">
+        <h2>Brain Dump</h2>
+
+        <!-- Brain Dump Task Form -->
+        <div id="task-form-container">
+            <h3>Add New Task</h3>
+            <form id="brain-dump-form">
+                <label for="brain-dump-title">Title:</label>
+                <input type="text" id="brain-dump-title" required>
+
+                <label for="brain-dump-description">Description:</label>
+                <textarea id="brain-dump-description" required></textarea>
+
+                <label for="brain-dump-due-date">Due Date:</label>
+                <input type="date" id="brain-dump-due-date">
+
+                <label for="brain-dump-schedule-time">Schedule Time:</label>
+                <input type="time" id="brain-dump-schedule-time">
+
+                <label for="brain-dump-category">Category:</label>
+                <select id="brain-dump-category">
+                    <option value="home">Home</option>
+                    <option value="work">Work</option>
+                    <option value="personal">Personal</option>
+                    <option value="other">Other</option>
+                </select>
+
+                <button type="submit">Add Task</button>
+                <button type="button" onclick="closeTaskForm()">Cancel</button>
+            </form>
+        </div>
+
+        <div id="brain-dump-container">
+            <div class="brain-dump-module" id="home">
+                <h3>Home</h3>
+                <ul id="home-list"></ul>
+                <button class="add-task-btn" onclick="showBrainDumpForm('home')">Add Task</button>
+            </div>
+            <div class="brain-dump-module" id="work">
+                <h3>Work</h3>
+                <ul id="work-list"></ul>
+                <button class="add-task-btn" onclick="showBrainDumpForm('work')">Add Task</button>
+            </div>
+            <div class="brain-dump-module" id="personal">
+                <h3>Personal</h3>
+                <ul id="personal-list"></ul>
+                <button class="add-task-btn" onclick="showBrainDumpForm('personal')">Add Task</button>
+            </div>
+            <div class="brain-dump-module" id="other">
+                <h3>Other</h3>
+                <ul id="other-list"></ul>
+                <button class="add-task-btn" onclick="showBrainDumpForm('other')">Add Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
-
 </html>
