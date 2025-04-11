@@ -190,37 +190,39 @@ taskForm.addEventListener("submit", (e) => {
   renderSchedule();
 });
 
-// Get elements
+let editingTask = null; // Store the task being edited
+
 const addTaskButton = document.getElementById('add-task-btn');
 const taskFormContainer = document.getElementById('task-form-container');
 const cancelButton = document.getElementById('cancel-task');
 const taskForm = document.getElementById('task-form');
-const overlay = document.createElement('div');
-overlay.classList.add('overlay');
-document.body.appendChild(overlay);
+const overlay = document.getElementById('overlay');
+const taskList = document.getElementById('task-list');
 
 // Show the form when 'Add Task' button is clicked
 addTaskButton.addEventListener('click', () => {
-    taskFormContainer.style.display = 'block'; // Show the form
-    overlay.style.display = 'block'; // Show the overlay
-    setTimeout(() => taskFormContainer.style.opacity = '1', 0); // Fade in effect
+    editingTask = null; // Reset the editing task
+    taskForm.reset(); // Clear the form
+    taskFormContainer.style.display = 'block';
+    overlay.style.display = 'block';
+    setTimeout(() => taskFormContainer.style.opacity = '1', 10); // Fade-in effect
 });
 
 // Hide the form when 'Cancel' button is clicked
 cancelButton.addEventListener('click', () => {
-    taskFormContainer.style.display = 'none'; // Hide the form
-    overlay.style.display = 'none'; // Hide the overlay
-    taskFormContainer.style.opacity = '0'; // Reset opacity for next open
+    taskFormContainer.style.display = 'none';
+    overlay.style.display = 'none';
+    taskFormContainer.style.opacity = '0';
 });
 
 // Hide the form if the overlay is clicked
 overlay.addEventListener('click', () => {
     taskFormContainer.style.display = 'none';
     overlay.style.display = 'none';
-    taskFormContainer.style.opacity = '0'; // Reset opacity
+    taskFormContainer.style.opacity = '0';
 });
 
-// Handle form submission (including date and time)
+// Handle form submission (including date, time, and category)
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent page refresh
     
@@ -228,18 +230,89 @@ taskForm.addEventListener('submit', (e) => {
     const taskDescription = document.getElementById('task-description').value;
     const taskDate = document.getElementById('task-date').value;
     const taskTime = document.getElementById('task-time').value;
-    
-    // Example of handling the new task (can be added to a list or database)
-    console.log(`New Task: ${taskName}`);
-    console.log(`Description: ${taskDescription}`);
-    console.log(`Date: ${taskDate}`);
-    console.log(`Time: ${taskTime}`);
-    
-    // Hide the form after submission
+    const taskCategory = document.getElementById('task-category').value;
+
+    if (editingTask) {
+        // Edit existing task
+        editingTask.name = taskName;
+        editingTask.description = taskDescription;
+        editingTask.date = taskDate;
+        editingTask.time = taskTime;
+        editingTask.category = taskCategory;
+        updateTaskInList(editingTask);
+    } else {
+        // Add new task
+        const newTask = {
+            name: taskName,
+            description: taskDescription,
+            date: taskDate,
+            time: taskTime,
+            category: taskCategory
+        };
+        addTaskToList(newTask);
+    }
+
+    // Close the form after submission
     taskFormContainer.style.display = 'none';
     overlay.style.display = 'none';
-    taskFormContainer.style.opacity = '0'; // Reset opacity
+    taskFormContainer.style.opacity = '0';
 });
+
+// Add new task to the task list
+function addTaskToList(task) {
+    const taskItem = document.createElement('div');
+    taskItem.classList.add('task-item');
+    taskItem.innerHTML = `
+        <div><strong>${task.name}</strong> - ${task.category}</div>
+        <div>${task.description}</div>
+        <div>${task.date} at ${task.time}</div>
+        <button class="edit-btn">Edit</button>
+        <button class="delete-btn">Delete</button>
+    `;
+    
+    taskItem.querySelector('.edit-btn').addEventListener('click', () => {
+        editTask(task);
+    });
+    
+    taskItem.querySelector('.delete-btn').addEventListener('click', () => {
+        deleteTask(taskItem);
+    });
+
+    taskList.appendChild(taskItem);
+}
+
+// Edit a task
+function editTask(task) {
+    editingTask = task;
+    document.getElementById('task-name').value = task.name;
+    document.getElementById('task-description').value = task.description;
+    document.getElementById('task-date').value = task.date;
+    document.getElementById('task-time').value = task.time;
+    document.getElementById('task-category').value = task.category;
+
+    taskFormContainer.style.display = 'block';
+    overlay.style.display = 'block';
+    setTimeout(() => taskFormContainer.style.opacity = '1', 10);
+}
+
+// Update task in the list
+function updateTaskInList(task) {
+    const taskItems = document.querySelectorAll('.task-item');
+    taskItems.forEach(item => {
+        const taskName = item.querySelector('div strong').textContent;
+        if (taskName === task.name) {
+            item.querySelector('div strong').textContent = `${task.name} - ${task.category}`;
+            item.querySelector('div:nth-of-type(2)').textContent = task.description;
+            item.querySelector('div:nth-of-type(3)').textContent = `${task.date} at ${task.time}`;
+        }
+    });
+}
+
+// Delete task from the list
+function deleteTask(taskItem) {
+    taskItem.remove();
+}
+
 
 
 // ==== Brain Dump ====
