@@ -213,20 +213,68 @@ button.active {
     content: "🌀";
 }
 
-/* Optional: Adjust spacing between the new form fields */
-#task-form label {
-    font-size: 1.1em;
-    margin-bottom: 5px;
+/* General styles for the popup form */
+.task-form-container {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centers the form */
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Soft shadow for the popup */
+    border-radius: 10px;
+    width: 300px;
+    z-index: 1000;
+    transition: opacity 0.3s ease-in-out;
 }
 
-#task-form input[type="date"],
-#task-form input[type="time"] {
+/* Optional: Dim background behind popup */
+.overlay {
+    display: none; /* Initially hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Below the popup */
+}
+
+/* Form Fields Styling */
+#task-form input,
+#task-form textarea {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #A8DADC;
     border-radius: 5px;
 }
+
+/* Button Styling */
+#task-form button {
+    background-color: #A8DADC;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#task-form button:hover {
+    background-color: #75b4bb; /* Darker mint on hover */
+}
+
+/* Cancel Button Styling */
+#cancel-task {
+    background-color: #ff6b6b; /* Red for cancel */
+}
+
+#cancel-task:hover {
+    background-color: #ff4d4d; /* Darker red on hover */
+}
+
 
 /* Responsive Layout */
 @media (max-width: 768px) {
