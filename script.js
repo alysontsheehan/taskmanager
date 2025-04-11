@@ -123,6 +123,25 @@ function renderSchedule() {
   });
 }
 
+// Handle form submission (including date and time)
+taskForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent page refresh
+    
+    const taskName = document.getElementById('task-name').value;
+    const taskDescription = document.getElementById('task-description').value;
+    const taskDate = document.getElementById('task-date').value;
+    const taskTime = document.getElementById('task-time').value;
+    
+    // Example of handling the new task (can be added to a list or database)
+    console.log(`New Task: ${taskName}`);
+    console.log(`Description: ${taskDescription}`);
+    console.log(`Date: ${taskDate}`);
+    console.log(`Time: ${taskTime}`);
+    
+    // Hide the form after submission
+    taskFormContainer.style.display = 'none';
+});
+
 // ==== Task Form ====
 document.getElementById("add-task-btn").addEventListener("click", () => {
   openTaskForm();
