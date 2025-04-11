@@ -1,303 +1,222 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
 
-/* Base Setup */
+/* Body */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9f6f2; /* Sand beige */
-    color: #333;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  background-color: #e0f7fa; /* Soft light teal background */
+  color: #333; /* Dark text for contrast */
+  padding: 20px;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
 /* Header */
 header {
-    text-align: center;
-    margin-bottom: 30px;
+  background-color: #00695c; /* Deep teal background */
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  font-size: 2rem;
+  border-radius: 8px;
 }
 
 header h1 {
-    color: #457b9d; /* Ocean blue */
-    font-size: 2.5rem;
-    margin: 0;
+  margin: 0;
+  font-size: 2.5rem;
 }
 
-/* Toggle Buttons */
-.page-toggle-buttons,
-.date-toggle-buttons,
+/* Page Toggle Buttons */
+.page-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.page-toggle-buttons button {
+  background-color: #80deea; /* Light teal */
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.page-toggle-buttons button.active {
+  background-color: #00695c; /* Dark teal for active button */
+  color: white;
+}
+
+.page-toggle-buttons button:hover {
+  background-color: #4db6ac; /* Lighter teal for hover effect */
+}
+
+/* Date Toggle Buttons */
+.date-toggle-buttons button {
+  background-color: #80deea; 
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.date-toggle-buttons button.active {
+  background-color: #00695c; /* Dark teal for active button */
+  color: white;
+}
+
+/* Category Filter */
 .category-filter {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
-button {
-    font-family: 'Poppins', sans-serif;
-    padding: 10px 16px;
-    border: none;
-    border-radius: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 3px 5px rgba(0,0,0,0.05);
-    background-color: #a8dadc;
-    color: #fff;
+.category-filter button {
+  background-color: #4db6ac; /* Teal-green */
+  border: none;
+  padding: 10px 20px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background-color: #7abfc4;
-    transform: translateY(-1px);
+.category-filter button.active {
+  background-color: #00695c; /* Dark teal */
+  color: white;
 }
 
-button.active {
-    background-color: #457b9d;
+.category-filter button:hover {
+  background-color: #4db6ac; /* Slightly lighter for hover effect */
 }
 
-/* Schedule Section */
-#schedule-page,
-#brain-dump-page {
-    width: 100%;
-    max-width: 1200px;
-    display: none;
+/* Task Container */
+section {
+  background-color: #ffffff; /* White background for task sections */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-#schedule-page.active,
-#brain-dump-page.active {
-    display: block;
+/* Task Form */
+#task-form-container,
+#brain-dump-form-container {
+  display: none;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#schedule-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+#task-form label,
+#brain-dump-form label {
+  margin-bottom: 8px;
+  display: block;
+  color: #00695c; /* Deep teal text */
+  font-weight: bold;
 }
 
-#schedule-header h2 {
-    color: #457b9d;
-    font-size: 1.5rem;
+#task-form input,
+#brain-dump-form input,
+#task-form textarea,
+#brain-dump-form textarea,
+#task-form select,
+#brain-dump-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #00796b; /* Deep teal border */
+  border-radius: 5px;
 }
 
-/* Schedule View Grid */
-#schedule {
-    display: grid;
-    grid-template-columns: 80px 1fr;
-    gap: 10px;
-    width: 100%;
+#task-form textarea,
+#brain-dump-form textarea {
+  height: 100px;
 }
 
-.schedule-hour {
-    font-weight: 600;
-    color: #b8a398; /* driftwood */
-    text-align: right;
-    padding-top: 20px;
+/* Task List */
+#task-list {
+  margin-top: 20px;
 }
 
-.schedule-slot {
-    border: 1px dashed #ddd;
-    border-radius: 10px;
-    min-height: 50px;
-    background-color: #fff;
-    padding: 10px;
-    position: relative;
-}
-
-/* Task Block */
-.task {
-    border-radius: 10px;
-    padding: 10px;
-    margin-bottom: 10px;
-    color: #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    position: relative;
-}
-
-.task input[type="checkbox"] {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
-.task .edit-btn {
-    background-color: #ffe0b5; /* Coral */
-    color: #333;
-    font-size: 0.8rem;
-    padding: 5px 8px;
-    border-radius: 5px;
-}
-
-.task .edit-btn:hover {
-    background-color: #ffd49a;
-}
-
-/* Category Color Blocks */
-.task[data-category="home"] {
-    background-color: #cdeac0;
-}
-.task[data-category="work"] {
-    background-color: #d6e6f2;
-}
-.task[data-category="personal"] {
-    background-color: #ffe0b5;
-}
-.task[data-category="other"] {
-    background-color: #e3b7a0;
-}
-
-/* Add Task Modal/Form */
-#task-form-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    max-width: 500px;
-    width: 100%;
-}
-
-#task-form-container label {
-    font-weight: 600;
-    margin-top: 10px;
-    display: block;
-}
-
-#task-form-container input,
-#task-form-container select,
-#task-form-container textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-/* Brain Dump */
-.task-list {
-    background-color: #fff;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
+.dump-tasks {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #e0f7fa; /* Light teal background for tasks */
+  border-radius: 5px;
+  margin-bottom: 10px;
 }
 
 .task-list h3 {
-    color: #457b9d;
-    margin-bottom: 10px;
+  color: #00695c; /* Deep teal for section titles */
+  margin-bottom: 10px;
 }
 
-/* Icons & Category Buttons */
-.category-filter button::before {
-    margin-right: 5px;
+.task-list button {
+  background-color: #80deea; /* Light teal */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.category-filter button[data-category="home"]::before {
-    content: "🏡";
-}
-.category-filter button[data-category="work"]::before {
-    content: "💼";
-}
-.category-filter button[data-category="personal"]::before {
-    content: "💖";
-}
-.category-filter button[data-category="other"]::before {
-    content: "🌀";
+.task-list button:hover {
+  background-color: #4db6ac; /* Lighter teal on hover */
 }
 
-/* General styles for the popup form */
-.task-form-container {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centers the form */
-    background-color: #ffffff;
-    padding: 20px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Soft shadow for the popup */
-    border-radius: 10px;
-    width: 300px;
-    z-index: 1000;
-    transition: opacity 0.3s ease-in-out;
+/* Task Add Button (General) */
+button {
+  background-color: #80deea; /* Light teal */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-/* Optional: Dim background behind popup */
-.overlay {
-    display: none; /* Initially hidden */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 999; /* Below the popup */
+button:hover {
+  background-color: #4db6ac;
 }
 
-/* Form Fields Styling */
-#task-form input,
-#task-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #A8DADC;
-    border-radius: 5px;
+/* Overlay (For form visibility) */
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: none;
 }
 
-/* Button Styling */
-#task-form button {
-    background-color: #A8DADC;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+#task-form-container,
+#brain-dump-form-container {
+  display: none; /* Initially hidden */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 500px;
+  z-index: 100;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-#task-form button:hover {
-    background-color: #75b4bb; /* Darker mint on hover */
-}
-
-/* Cancel Button Styling */
-#cancel-task {
-    background-color: #ff6b6b; /* Red for cancel */
-}
-
-#cancel-task:hover {
-    background-color: #ff4d4d; /* Darker red on hover */
-}
-
-
-/* Responsive Layout */
-@media (max-width: 768px) {
-    #schedule {
-        grid-template-columns: 1fr;
-    }
-
-    .schedule-hour {
-        display: none;
-    }
-
-    .page-toggle-buttons,
-    .date-toggle-buttons,
-    .category-filter {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    button {
-        width: 100%;
-    }
-
-    #task-form-container {
-        margin-top: 20px;
-    }
+#overlay.active {
+  display: block;
 }
