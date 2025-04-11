@@ -134,6 +134,28 @@
     </div>
   </section>
 
+  <!-- Add Task Button -->
+<button id="add-task-btn">Add Task</button>
+
+<!-- Task Form (Initially Hidden) -->
+<div id="task-form-container" class="task-form-container">
+    <form id="task-form">
+        <label for="task-name">Task Name:</label>
+        <input type="text" id="task-name" name="task-name" required>
+        
+        <label for="task-description">Description:</label>
+        <textarea id="task-description" name="task-description"></textarea>
+
+        <label for="task-date">Date:</label>
+        <input type="date" id="task-date" name="task-date" required>
+        
+        <label for="task-time">Time:</label>
+        <input type="time" id="task-time" name="task-time" required>
+        
+        <button type="submit" id="submit-task">Save Task</button>
+        <button type="button" id="cancel-task">Cancel</button>
+    </form>
+</div>
   <!-- Scripts -->
   <script src="script.js"></script>
 </body>
