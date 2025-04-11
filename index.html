@@ -37,38 +37,45 @@
 
     <div id="schedule"></div>
 
-    <!-- Add/Edit Task Form -->
-    <div id="task-form-container" style="display: none;">
-      <h3 id="form-title">Add Task</h3>
-      <form id="task-form">
-        <input type="hidden" id="task-id" />
-        <label for="task-title">Title</label>
-        <input type="text" id="task-title" required />
+<!-- Add Task Button -->
+<button id="add-task-btn">Add Task</button>
 
-        <label for="task-date">Date</label>
-        <input type="date" id="task-date" required />
+<!-- Task List (To display added tasks) -->
+<div id="task-list">
+    <!-- Task items will be dynamically added here -->
+</div>
 
-        <label for="start-time">Start Time</label>
-        <input type="time" id="start-time" required />
+<!-- Task Form (Initially Hidden) -->
+<div id="overlay" class="overlay"></div> <!-- Dimmed background -->
+<div id="task-form-container" class="task-form-container">
+    <form id="task-form">
+        <label for="task-name">Task Name:</label>
+        <input type="text" id="task-name" name="task-name" required>
+        
+        <label for="task-description">Description:</label>
+        <textarea id="task-description" name="task-description"></textarea>
 
-        <label for="end-time">End Time</label>
-        <input type="time" id="end-time" required />
+        <label for="task-date">Date:</label>
+        <input type="date" id="task-date" name="task-date" required>
+        
+        <label for="task-time">Time:</label>
+        <input type="time" id="task-time" name="task-time" required>
 
-        <label for="task-category">Category</label>
-        <select id="task-category">
-          <option value="home">Home</option>
-          <option value="work">Work</option>
-          <option value="personal">Personal</option>
-          <option value="other">Other</option>
+        <!-- Category Selection -->
+        <label for="task-category">Category:</label>
+        <select id="task-category" name="task-category" required>
+            <option value="">Select a category</option>
+            <option value="home">Home</option>
+            <option value="work">Work</option>
+            <option value="personal">Personal</option>
+            <option value="other">Other</option>
         </select>
+        
+        <button type="submit" id="submit-task">Save Task</button>
+        <button type="button" id="cancel-task">Cancel</button>
+    </form>
+</div>
 
-        <label for="task-details">Details</label>
-        <textarea id="task-details" rows="3"></textarea>
-
-        <button type="submit" id="save-task">Save Task</button>
-      </form>
-    </div>
-  </section>
 
   <!-- Brain Dump Page -->
   <section id="brain-dump-page">
