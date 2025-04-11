@@ -38,50 +38,48 @@
     <div id="schedule"></div>
 
 <!-- Add Task Button -->
-<button id="add-task-btn">Add Task</button>
+<button id="add-task-btn-schedule">Add Task</button>
 
 <!-- Task List (To display added tasks) -->
 <div id="task-list">
     <!-- Task items will be dynamically added here -->
 </div>
 
-<!-- Task Form (Initially Hidden) -->
-<div id="overlay" class="overlay"></div> <!-- Dimmed background -->
-<div id="task-form-container" class="task-form-container">
-    <form id="task-form">
+  <!-- Task Form for Schedule -->
+    <div id="task-form-container" class="task-form-container">
+      <form id="task-form">
         <label for="task-name">Task Name:</label>
         <input type="text" id="task-name" name="task-name" required>
-        
+
         <label for="task-description">Description:</label>
         <textarea id="task-description" name="task-description"></textarea>
 
         <label for="task-date">Date:</label>
         <input type="date" id="task-date" name="task-date" required>
-        
+
         <label for="task-time">Time:</label>
         <input type="time" id="task-time" name="task-time" required>
 
-        <!-- Category Selection -->
         <label for="task-category">Category:</label>
         <select id="task-category" name="task-category" required>
-            <option value="">Select a category</option>
-            <option value="home">Home</option>
-            <option value="work">Work</option>
-            <option value="personal">Personal</option>
-            <option value="other">Other</option>
+          <option value="home">Home</option>
+          <option value="work">Work</option>
+          <option value="personal">Personal</option>
+          <option value="other">Other</option>
         </select>
-        
+
         <button type="submit" id="submit-task">Save Task</button>
         <button type="button" id="cancel-task">Cancel</button>
-    </form>
-</div>
+      </form>
+    </div>
+  </section>
 
 
-  <!-- Brain Dump Page -->
+ <!-- Brain Dump Page -->
   <section id="brain-dump-page">
     <h2>Brain Dump</h2>
 
-    <!-- Four Core Modules -->
+    <!-- Task Lists for Brain Dump -->
     <div class="task-list" id="dump-home">
       <h3>🏡 Home</h3>
       <button onclick="openBrainDumpForm('home')">+ Add Task</button>
@@ -137,32 +135,11 @@
         <input type="time" id="dump-schedule-end" />
 
         <button type="submit">Save Task</button>
+        <button type="button" id="cancel-brain-dump-task">Cancel</button>
       </form>
     </div>
   </section>
 
-  <!-- Add Task Button -->
-<button id="add-task-btn">Add Task</button>
-
-<!-- Task Form (Initially Hidden) -->
-<div id="task-form-container" class="task-form-container">
-    <form id="task-form">
-        <label for="task-name">Task Name:</label>
-        <input type="text" id="task-name" name="task-name" required>
-        
-        <label for="task-description">Description:</label>
-        <textarea id="task-description" name="task-description"></textarea>
-
-        <label for="task-date">Date:</label>
-        <input type="date" id="task-date" name="task-date" required>
-        
-        <label for="task-time">Time:</label>
-        <input type="time" id="task-time" name="task-time" required>
-        
-        <button type="submit" id="submit-task">Save Task</button>
-        <button type="button" id="cancel-task">Cancel</button>
-    </form>
-</div>
   <!-- Scripts -->
   <script src="script.js"></script>
 </body>
