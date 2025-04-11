@@ -27,23 +27,25 @@ const categoryButtons = document.querySelectorAll(".category-filter button");
 const brainDumpFormContainer = document.getElementById("brain-dump-form-container");
 const brainDumpForm = document.getElementById("brain-dump-form");
 
-// ==== Page Toggle ====
-document.getElementById("show-schedule").addEventListener("click", () => {
-  console.log("Schedule button clicked");
+// Toggle between Schedule and Brain Dump pages
+const showScheduleBtn = document.getElementById("show-schedule");
+const showBrainDumpBtn = document.getElementById("show-brain-dump");
+const schedulePage = document.getElementById("schedule-page");
+const brainDumpPage = document.getElementById("brain-dump-page");
+
+// Toggle buttons to switch between pages
+showScheduleBtn.addEventListener("click", () => {
   schedulePage.classList.add("active");
   brainDumpPage.classList.remove("active");
-  document.getElementById("show-schedule").classList.add("active");
-  document.getElementById("show-brain-dump").classList.remove("active");
-  renderSchedule();
+  showScheduleBtn.classList.add("active");
+  showBrainDumpBtn.classList.remove("active");
 });
 
-document.getElementById("show-brain-dump").addEventListener("click", () => {
-  console.log("Brain dump button clicked");
+showBrainDumpBtn.addEventListener("click", () => {
   brainDumpPage.classList.add("active");
   schedulePage.classList.remove("active");
-  document.getElementById("show-brain-dump").classList.add("active");
-  document.getElementById("show-schedule").classList.remove("active");
-  renderBrainDump();
+  showBrainDumpBtn.classList.add("active");
+  showScheduleBtn.classList.remove("active");
 });
 
 // ==== Date Buttons ====
@@ -329,44 +331,147 @@ function deleteTask(taskItem) {
 
 // ==== Brain Dump ====
 
+
+// Open Brain Dump Task Form and assign category
 function openBrainDumpForm(category) {
-  brainDumpFormContainer.style.display = "block";
-  document.getElementById("dump-category").value = category;
+  const formContainer = document.getElementById('brain-dump-form-container');
+  formContainer.style.display = 'block';
+  document.getElementById('dump-category').value = category;
 }
 
-brainDumpForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const title = document.getElementById("dump-title").value;
-  const description = document.getElementById("dump-description").value;
-  const dueDate = document.getElementById("dump-due-date").value;
-  const category = document.getElementById("dump-category").value;
-  const scheduleDate = document.getElementById("dump-schedule-date").value;
-  const scheduleStart = document.getElementById("dump-schedule-time").value;
-  const scheduleEnd = document.getElementById("dump-schedule-end").value;
-
-  if (scheduleDate && scheduleStart) {
-    tasks.push({
-      id: Date.now(),
-      title,
-      date: scheduleDate,
-      startTime: scheduleStart,
-      endTime: scheduleEnd || scheduleStart,
-      category,
-      details: description,
-      completed: false,
-    });
-  }
-
-  const dumpDiv = document.querySelector(`.dump-tasks[data-category="${category}"]`);
-  const item = document.createElement("div");
-  item.textContent = `${title} ${dueDate ? `(Due: ${dueDate})` : ""}`;
-  dumpDiv.appendChild(item);
-
-  brainDumpForm.reset();
-  brainDumpFormContainer.style.display = "none";
-  renderSchedule();
+// Cancel Task Form for both Schedule and Brain Dump pages
+document.getElementById('cancel-task').addEventListener('click', () => {
+  document.getElementById('task-form-container').style.display = 'none';
 });
 
-function renderBrainDump() {
-  // Tasks already rendered on submission
-}
+document.getElementById('cancel-brain-dump-task').addEventListener('click', () => {
+  document.getElementById('brain-dump-form-container').style.display = 'none';
+});
+
+// Handle Task Submission for Brain Dump and Schedule
+document.getElementById('brain-dump-form').addEventListener('submit', function (event) {
+  event.preventDefault();
+  
+  const taskTitle = document.getElementById('dump-title').value;
+  const taskDescription = document.getElementById('dump-description').value;
+  const taskCategory = document.getElementById('dump-category').value;
+  const taskDueDate = document.getElementById('dump-due-date').value;
+  const taskScheduleDate = document.getElementById('dump-schedule-date').value;
+  const taskStartTime = document.getElementById('dump-schedule-time').value;
+  const taskEndTime = document.getElementById('dump-schedule-end').value;
+
+  // Validate if the task has a title or description
+  if (taskTitle.trim() === "" && taskDescription.trim() === "") {
+    alert("Please provide a task title or description.");
+    return;
+  }
+
+  // Create Task Object for Brain Dump
+  const task = {
+    title: taskTitle,
+    description: taskDescription,
+    category: taskCategory,
+    dueDate: taskDueDate,
+    scheduleDate: taskScheduleDate,
+    startTime: taskStartTime,
+    endTime: taskEndTime
+  };
+
+  // Save task to the appropriate category in the Brain Dump page
+  const taskList = document.querySelector(`#dump-${taskCategory} .dump-tasks`);
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("task");
+  taskElement.innerHTML = `
+    <h4>${task.title}</h4>
+    <p>${task.description}</p>
+    <p><strong>Due Date:</strong> ${task.dueDate}</p>
+    <p><strong>Schedule:</strong> ${task.scheduleDate} ${task.startTime ? `from ${task.startTime}` : ""} ${task.endTime ? `to ${task.endTime}` : ""}</p>
+  `;
+  taskList.appendChild(taskElement);
+
+  // Clear form inputs after submission
+  document.getElementById('brain-dump-form').reset();
+  
+  // Hide the form after task is saved
+  document.getElementById('brain-dump-form-container').style.display = 'none';
+
+  // Optionally, you can add functionality to automatically add this task to the Schedule page here.
+  // For now, we're just adding it to the Brain Dump tasks.
+  alert('Task saved to Brain Dump!');
+});
+
+// Handle Task Form Submission for the Schedule Page
+document.getElementById('task-form').addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const taskName = document.getElementById('task-name').value;
+  const taskDescription = document.getElementById('task-description').value;
+  const taskDate = document.getElementById('task-date').value;
+  const taskTime = document.getElementById('task-time').value;
+  const taskCategory = document.getElementById('task-category').value;
+
+  // Validate if the task has a name
+  if (taskName.trim() === "") {
+    alert("Please provide a task name.");
+    return;
+  }
+
+  // Create Task Object for Schedule
+  const task = {
+    name: taskName,
+    description: taskDescription,
+    date: taskDate,
+    time: taskTime,
+    category: taskCategory
+  };
+
+  // Add Task to the Schedule page
+  const scheduleContainer = document.getElementById('schedule');
+  const taskElement = document.createElement("div");
+  taskElement.classList.add("schedule-task");
+  taskElement.innerHTML = `
+    <h4>${task.name}</h4>
+    <p>${task.description}</p>
+    <p><strong>Date:</strong> ${task.date}</p>
+    <p><strong>Time:</strong> ${task.time}</p>
+    <p><strong>Category:</strong> ${task.category}</p>
+  `;
+  scheduleContainer.appendChild(taskElement);
+
+  // Clear form inputs after submission
+  document.getElementById('task-form').reset();
+  
+  // Hide the form after task is saved
+  document.getElementById('task-form-container').style.display = 'none';
+  
+  alert('Task saved to the Schedule!');
+});
+
+// Task Filter by Category (Brain Dump Page)
+const categoryButtons = document.querySelectorAll('.category-filter button');
+categoryButtons.forEach(button => {
+  button.addEventListener('click', (event) => {
+    // Remove active class from all buttons
+    categoryButtons.forEach(btn => btn.classList.remove('active'));
+    // Add active class to the clicked button
+    event.target.classList.add('active');
+
+    const category = event.target.dataset.category;
+    const tasks = document.querySelectorAll('.dump-tasks');
+    tasks.forEach(taskList => {
+      if (taskList.dataset.category === category || category === 'all') {
+        taskList.style.display = 'block';
+      } else {
+        taskList.style.display = 'none';
+      }
+    });
+  });
+});
+
+// Initialize category to show all tasks by default
+document.querySelector('.category-filter button[data-category="home"]').click();
+
+// Show Task Form in Schedule page
+document.getElementById('add-task-btn').addEventListener('click', () => {
+  document.getElementById('task-form-container').style.display = 'block';
+});
