@@ -123,24 +123,33 @@ function renderSchedule() {
   });
 }
 
-// Handle form submission (including date and time)
+// Handle form submission (including date, time, and category)
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent page refresh
-    
-    const taskName = document.getElementById('task-name').value;
-    const taskDescription = document.getElementById('task-description').value;
-    const taskDate = document.getElementById('task-date').value;
-    const taskTime = document.getElementById('task-time').value;
-    
-    // Example of handling the new task (can be added to a list or database)
-    console.log(`New Task: ${taskName}`);
-    console.log(`Description: ${taskDescription}`);
-    console.log(`Date: ${taskDate}`);
-    console.log(`Time: ${taskTime}`);
-    
-    // Hide the form after submission
-    taskFormContainer.style.display = 'none';
+
+    const newTask = {
+        id: editingTaskId || Date.now(),
+        title: document.getElementById("task-title").value,
+        date: document.getElementById("task-date").value,
+        startTime: document.getElementById("start-time").value,
+        endTime: document.getElementById("end-time").value,
+        category: document.getElementById("task-category").value,
+        details: document.getElementById("task-details").value,
+        completed: false,
+    };
+
+    if (editingTaskId) {
+        tasks = tasks.map((t) => (t.id === editingTaskId ? newTask : t));
+    } else {
+        tasks.push(newTask);
+    }
+
+    taskFormContainer.style.display = "none";
+    overlay.style.display = "none";
+    taskFormContainer.style.opacity = "0";
+    renderSchedule();
 });
+
 
 // ==== Task Form ====
 document.getElementById("add-task-btn").addEventListener("click", () => {
