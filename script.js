@@ -29,6 +29,7 @@ const brainDumpForm = document.getElementById("brain-dump-form");
 
 // ==== Page Toggle ====
 document.getElementById("show-schedule").addEventListener("click", () => {
+  console.log("Schedule button clicked");
   schedulePage.classList.add("active");
   brainDumpPage.classList.remove("active");
   document.getElementById("show-schedule").classList.add("active");
@@ -37,6 +38,7 @@ document.getElementById("show-schedule").addEventListener("click", () => {
 });
 
 document.getElementById("show-brain-dump").addEventListener("click", () => {
+  console.log("Brain dump button clicked");
   brainDumpPage.classList.add("active");
   schedulePage.classList.remove("active");
   document.getElementById("show-brain-dump").classList.add("active");
