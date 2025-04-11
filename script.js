@@ -190,6 +190,58 @@ taskForm.addEventListener("submit", (e) => {
   renderSchedule();
 });
 
+// Get elements
+const addTaskButton = document.getElementById('add-task-btn');
+const taskFormContainer = document.getElementById('task-form-container');
+const cancelButton = document.getElementById('cancel-task');
+const taskForm = document.getElementById('task-form');
+const overlay = document.createElement('div');
+overlay.classList.add('overlay');
+document.body.appendChild(overlay);
+
+// Show the form when 'Add Task' button is clicked
+addTaskButton.addEventListener('click', () => {
+    taskFormContainer.style.display = 'block'; // Show the form
+    overlay.style.display = 'block'; // Show the overlay
+    setTimeout(() => taskFormContainer.style.opacity = '1', 0); // Fade in effect
+});
+
+// Hide the form when 'Cancel' button is clicked
+cancelButton.addEventListener('click', () => {
+    taskFormContainer.style.display = 'none'; // Hide the form
+    overlay.style.display = 'none'; // Hide the overlay
+    taskFormContainer.style.opacity = '0'; // Reset opacity for next open
+});
+
+// Hide the form if the overlay is clicked
+overlay.addEventListener('click', () => {
+    taskFormContainer.style.display = 'none';
+    overlay.style.display = 'none';
+    taskFormContainer.style.opacity = '0'; // Reset opacity
+});
+
+// Handle form submission (including date and time)
+taskForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent page refresh
+    
+    const taskName = document.getElementById('task-name').value;
+    const taskDescription = document.getElementById('task-description').value;
+    const taskDate = document.getElementById('task-date').value;
+    const taskTime = document.getElementById('task-time').value;
+    
+    // Example of handling the new task (can be added to a list or database)
+    console.log(`New Task: ${taskName}`);
+    console.log(`Description: ${taskDescription}`);
+    console.log(`Date: ${taskDate}`);
+    console.log(`Time: ${taskTime}`);
+    
+    // Hide the form after submission
+    taskFormContainer.style.display = 'none';
+    overlay.style.display = 'none';
+    taskFormContainer.style.opacity = '0'; // Reset opacity
+});
+
+
 // ==== Brain Dump ====
 
 function openBrainDumpForm(category) {
