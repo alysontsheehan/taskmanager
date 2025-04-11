@@ -231,6 +231,7 @@ overlay.addEventListener('click', () => {
     taskFormContainer.style.opacity = '0';
 });
 
+
 // Handle form submission (including date, time, and category)
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault(); // Prevent page refresh
