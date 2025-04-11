@@ -1,104 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ally's Calm Planner</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header>
-        <h1>Task Manager</h1>
-        <div class="date-toggle-buttons">
-            <button onclick="showDate('yesterday')">Yesterday</button>
-            <button onclick="showDate('today')">Today</button>
-            <button onclick="showDate('tomorrow')">Tomorrow</button>
-            <button onclick="showDate('next')">Next 5 Days</button>
-        </div>
-    </header>
+  <header>
+    <h1>Ally's Calm Planner</h1>
+  </header>
 
-    <!-- Toggle buttons for Schedule and Brain Dump -->
-    <div class="page-toggle-buttons">
-        <button onclick="togglePage('schedule')">Schedule</button>
-        <button onclick="togglePage('brain-dump')">Brain Dump</button>
+  <!-- Page Toggle -->
+  <div class="page-toggle-buttons">
+    <button id="show-schedule" class="active">Schedule</button>
+    <button id="show-brain-dump">Brain Dump</button>
+  </div>
+
+  <!-- Date Toggle -->
+  <div class="date-toggle-buttons" id="date-buttons"></div>
+
+  <!-- Category Filters -->
+  <div class="category-filter">
+    <button data-category="home" class="active">Home</button>
+    <button data-category="work">Work</button>
+    <button data-category="personal">Personal</button>
+    <button data-category="other">Other</button>
+  </div>
+
+  <!-- Schedule Page -->
+  <section id="schedule-page" class="active">
+    <div id="schedule-header">
+      <h2>Daily Planner</h2>
+      <button id="add-task-btn">+ Add Task</button>
     </div>
 
-    <!-- Date Display -->
-    <div id="date-display">Tasks for: Today</div>
+    <div id="schedule"></div>
 
-    <!-- Schedule Page -->
-    <div id="schedule-page">
-        <div id="schedule-header">
-            <h2>Schedule View</h2>
-            <button onclick="showBrainDumpForm('home')">Add Task to Home</button>
-            <button onclick="showBrainDumpForm('work')">Add Task to Work</button>
-            <button onclick="showBrainDumpForm('personal')">Add Task to Personal</button>
-            <button onclick="showBrainDumpForm('other')">Add Task to Other</button>
-        </div>
-        <div id="schedule">
-            <!-- Task Slots -->
-            <div class="task-slot" id="schedule-time-540">9:00 AM</div>
-            <div class="task-slot" id="schedule-time-555">9:15 AM</div>
-            <div class="task-slot" id="schedule-time-570">9:30 AM</div>
-            <div class="task-slot" id="schedule-time-585">9:45 AM</div>
-            <div class="task-slot" id="schedule-time-600">10:00 AM</div>
-            <!-- More time slots can be added here -->
-        </div>
+    <!-- Add/Edit Task Form -->
+    <div id="task-form-container" style="display: none;">
+      <h3 id="form-title">Add Task</h3>
+      <form id="task-form">
+        <input type="hidden" id="task-id" />
+        <label for="task-title">Title</label>
+        <input type="text" id="task-title" required />
+
+        <label for="task-date">Date</label>
+        <input type="date" id="task-date" required />
+
+        <label for="start-time">Start Time</label>
+        <input type="time" id="start-time" required />
+
+        <label for="end-time">End Time</label>
+        <input type="time" id="end-time" required />
+
+        <label for="task-category">Category</label>
+        <select id="task-category">
+          <option value="home">Home</option>
+          <option value="work">Work</option>
+          <option value="personal">Personal</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="task-details">Details</label>
+        <textarea id="task-details" rows="3"></textarea>
+
+        <button type="submit" id="save-task">Save Task</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Brain Dump Page -->
+  <section id="brain-dump-page">
+    <h2>Brain Dump</h2>
+
+    <!-- Four Core Modules -->
+    <div class="task-list" id="dump-home">
+      <h3>🏡 Home</h3>
+      <button onclick="openBrainDumpForm('home')">+ Add Task</button>
+      <div class="dump-tasks" data-category="home"></div>
     </div>
 
-    <!-- Brain Dump Page -->
-    <div id="brain-dump-page" style="display:none;">
-        <h2>Brain Dump</h2>
-        <div class="brain-dump-buttons">
-            <button onclick="showBrainDumpForm('home')">Add Home Task</button>
-            <button onclick="showBrainDumpForm('work')">Add Work Task</button>
-            <button onclick="showBrainDumpForm('personal')">Add Personal Task</button>
-            <button onclick="showBrainDumpForm('other')">Add Other Task</button>
-        </div>
+    <div class="task-list" id="dump-work">
+      <h3>💼 Work</h3>
+      <button onclick="openBrainDumpForm('work')">+ Add Task</button>
+      <div class="dump-tasks" data-category="work"></div>
+    </div>
 
-        <!-- Brain Dump Task Lists -->
-        <div id="home-list" class="task-list">
-            <h3>Home</h3>
-            <ul></ul>
-        </div>
-        <div id="work-list" class="task-list">
-            <h3>Work</h3>
-            <ul></ul>
-        </div>
-        <div id="personal-list" class="task-list">
-            <h3>Personal</h3>
-            <ul></ul>
-        </div>
-        <div id="other-list" class="task-list">
-            <h3>Other</h3>
-            <ul></ul>
-        </div>
+    <div class="task-list" id="dump-personal">
+      <h3>💖 Personal</h3>
+      <button onclick="openBrainDumpForm('personal')">+ Add Task</button>
+      <div class="dump-tasks" data-category="personal"></div>
+    </div>
+
+    <div class="task-list" id="dump-other">
+      <h3>🌀 Other</h3>
+      <button onclick="openBrainDumpForm('other')">+ Add Task</button>
+      <div class="dump-tasks" data-category="other"></div>
     </div>
 
     <!-- Brain Dump Task Form -->
-    <div id="task-form-container" style="display:none;">
-        <h3>Add New Task</h3>
-        <form id="brain-dump-form">
-            <label for="brain-dump-title">Title</label>
-            <input type="text" id="brain-dump-title" required>
-            <label for="brain-dump-description">Description</label>
-            <textarea id="brain-dump-description" required></textarea>
-            <label for="brain-dump-due-date">Due Date</label>
-            <input type="date" id="brain-dump-due-date">
-            <label for="brain-dump-schedule-time">Schedule Time</label>
-            <input type="time" id="brain-dump-schedule-time">
-            <label for="brain-dump-category">Category</label>
-            <select id="brain-dump-category" required>
-                <option value="home">Home</option>
-                <option value="work">Work</option>
-                <option value="personal">Personal</option>
-                <option value="other">Other</option>
-            </select>
-            <button type="submit">Save Task</button>
-            <button type="button" onclick="closeTaskForm()">Cancel</button>
-        </form>
-    </div>
+    <div id="brain-dump-form-container" style="display: none;">
+      <h3>Add Brain Dump Task</h3>
+      <form id="brain-dump-form">
+        <label for="dump-title">Title</label>
+        <input type="text" id="dump-title" required />
 
-    <script src="script.js"></script>
+        <label for="dump-description">Description</label>
+        <textarea id="dump-description" rows="3"></textarea>
+
+        <label for="dump-due-date">Due Date</label>
+        <input type="date" id="dump-due-date" />
+
+        <label for="dump-category">Category</label>
+        <select id="dump-category">
+          <option value="home">Home</option>
+          <option value="work">Work</option>
+          <option value="personal">Personal</option>
+          <option value="other">Other</option>
+        </select>
+
+        <label for="dump-schedule-date">Schedule To Date (Optional)</label>
+        <input type="date" id="dump-schedule-date" />
+
+        <label for="dump-schedule-time">Start Time (Optional)</label>
+        <input type="time" id="dump-schedule-time" />
+
+        <label for="dump-schedule-end">End Time (Optional)</label>
+        <input type="time" id="dump-schedule-end" />
+
+        <button type="submit">Save Task</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
 </body>
 </html>
