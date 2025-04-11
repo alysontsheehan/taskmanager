@@ -132,4 +132,106 @@ header h1 {
     display: none;
     width: 100%;
     max-width: 1200px;
-    margin-top:
+    margin-top: 40px;
+}
+
+#brain-dump-page h2 {
+    color: #6c5ce7;
+}
+
+.brain-dump-buttons button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #f0f4f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.brain-dump-buttons button:hover {
+    background-color: #d6dbe1;
+}
+
+.task-list {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.task-list h3 {
+    color: #6c5ce7;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Task Form Styling */
+#task-form-container {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+#brain-dump-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+#brain-dump-form input, #brain-dump-form textarea, #brain-dump-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#brain-dump-form button {
+    padding: 10px 20px;
+    background-color: #6c5ce7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#brain-dump-form button:hover {
+    background-color: #5a4ec7;
+}
+
+#brain-dump-form button[type="button"] {
+    background-color: #e74c3c;
+}
+
+#brain-dump-form button[type="button"]:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .page-toggle-buttons button, .date-toggle-buttons button {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    #task-form-container {
+        width: 100%;
+    }
+}
