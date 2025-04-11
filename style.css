@@ -1,52 +1,73 @@
-/* Body styling */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Base Setup */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #ffffff;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f6f2; /* Sand beige */
     color: #333;
-    padding: 20px;
     margin: 0;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Header styling */
+/* Header */
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 header h1 {
-    color: #6c5ce7;
-    font-size: 2.5em;
-    margin-bottom: 10px;
+    color: #457b9d; /* Ocean blue */
+    font-size: 2.5rem;
+    margin: 0;
 }
 
-/* Date toggle buttons */
-.date-toggle-buttons button, .page-toggle-buttons button {
-    padding: 10px 20px;
-    margin: 5px;
-    background-color: #f0f4f8;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+/* Toggle Buttons */
+.page-toggle-buttons,
+.date-toggle-buttons,
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+button {
+    font-family: 'Poppins', sans-serif;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
     cursor: pointer;
-    font-size: 1em;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+    background-color: #a8dadc;
+    color: #fff;
 }
 
-.date-toggle-buttons button:hover, .page-toggle-buttons button:hover {
-    background-color: #d6dbe1;
+button:hover {
+    background-color: #7abfc4;
+    transform: translateY(-1px);
 }
 
-.page-toggle-buttons {
-    margin-top: 20px;
+button.active {
+    background-color: #457b9d;
 }
 
-/* Schedule Page */
-#schedule-page {
-    display: block;
+/* Schedule Section */
+#schedule-page,
+#brain-dump-page {
     width: 100%;
     max-width: 1200px;
-    margin-top: 40px;
+    display: none;
+}
+
+#schedule-page.active,
+#brain-dump-page.active {
+    display: block;
 }
 
 #schedule-header {
@@ -57,54 +78,45 @@ header h1 {
 }
 
 #schedule-header h2 {
-    color: #6c5ce7;
+    color: #457b9d;
+    font-size: 1.5rem;
 }
 
-#schedule-header button {
-    padding: 10px 15px;
-    background-color: #6c5ce7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#schedule-header button:hover {
-    background-color: #5a4ec7;
-}
-
-/* Task Slots in the Schedule */
+/* Schedule View Grid */
 #schedule {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 80px 1fr;
     gap: 10px;
+    width: 100%;
 }
 
-.task-slot {
+.schedule-hour {
+    font-weight: 600;
+    color: #b8a398; /* driftwood */
+    text-align: right;
+    padding-top: 20px;
+}
+
+.schedule-slot {
+    border: 1px dashed #ddd;
+    border-radius: 10px;
+    min-height: 50px;
     background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin: 5px 0;
-    position: relative;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.task-slot span {
-    color: #6c5ce7;
-    font-weight: bold;
-}
-
-.task {
-    background-color: #ffebcd;
-    margin: 5px 0;
     padding: 10px;
-    border-radius: 5px;
+    position: relative;
+}
+
+/* Task Block */
+.task {
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     position: relative;
 }
 
@@ -114,124 +126,115 @@ header h1 {
     right: 10px;
 }
 
-.task button {
-    background-color: #ffcc00;
-    color: white;
-    padding: 5px 10px;
-    border: none;
+.task .edit-btn {
+    background-color: #ffe0b5; /* Coral */
+    color: #333;
+    font-size: 0.8rem;
+    padding: 5px 8px;
     border-radius: 5px;
-    cursor: pointer;
 }
 
-.task button:hover {
-    background-color: #ffb300;
+.task .edit-btn:hover {
+    background-color: #ffd49a;
 }
 
-/* Brain Dump Page */
-#brain-dump-page {
-    display: none;
+/* Category Color Blocks */
+.task[data-category="home"] {
+    background-color: #cdeac0;
+}
+.task[data-category="work"] {
+    background-color: #d6e6f2;
+}
+.task[data-category="personal"] {
+    background-color: #ffe0b5;
+}
+.task[data-category="other"] {
+    background-color: #e3b7a0;
+}
+
+/* Add Task Modal/Form */
+#task-form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 500px;
     width: 100%;
-    max-width: 1200px;
-    margin-top: 40px;
 }
 
-#brain-dump-page h2 {
-    color: #6c5ce7;
+#task-form-container label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
 }
 
-.brain-dump-buttons button {
-    padding: 10px 20px;
-    margin: 5px;
-    background-color: #f0f4f8;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
+#task-form-container input,
+#task-form-container select,
+#task-form-container textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-size: 1rem;
 }
 
-.brain-dump-buttons button:hover {
-    background-color: #d6dbe1;
-}
-
+/* Brain Dump */
 .task-list {
     background-color: #fff;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
     border: 1px solid #ddd;
-    border-radius: 5px;
 }
 
 .task-list h3 {
-    color: #6c5ce7;
+    color: #457b9d;
     margin-bottom: 10px;
 }
 
-ul {
-    list-style-type: none;
-    padding: 0;
+/* Icons & Category Buttons */
+.category-filter button::before {
+    margin-right: 5px;
 }
 
-/* Task Form Styling */
-#task-form-container {
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 500px;
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
+.category-filter button[data-category="home"]::before {
+    content: "🏡";
+}
+.category-filter button[data-category="work"]::before {
+    content: "💼";
+}
+.category-filter button[data-category="personal"]::before {
+    content: "💖";
+}
+.category-filter button[data-category="other"]::before {
+    content: "🌀";
 }
 
-#brain-dump-form label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 1.1em;
-}
-
-#brain-dump-form input, #brain-dump-form textarea, #brain-dump-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-#brain-dump-form button {
-    padding: 10px 20px;
-    background-color: #6c5ce7;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-#brain-dump-form button:hover {
-    background-color: #5a4ec7;
-}
-
-#brain-dump-form button[type="button"] {
-    background-color: #e74c3c;
-}
-
-#brain-dump-form button[type="button"]:hover {
-    background-color: #c0392b;
-}
-
-/* Responsive Design */
+/* Responsive Layout */
 @media (max-width: 768px) {
-    body {
-        padding: 10px;
+    #schedule {
+        grid-template-columns: 1fr;
     }
 
-    .page-toggle-buttons button, .date-toggle-buttons button {
+    .schedule-hour {
+        display: none;
+    }
+
+    .page-toggle-buttons,
+    .date-toggle-buttons,
+    .category-filter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    button {
         width: 100%;
-        margin: 5px 0;
     }
 
     #task-form-container {
-        width: 100%;
+        margin-top: 20px;
     }
 }
