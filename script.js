@@ -1,181 +1,216 @@
-// Task Storage for Brain Dump (Home, Work, Personal, Other)
-let brainDumpTasks = {
-    home: [],
-    work: [],
-    personal: [],
-    other: []
-};
+// ==== Utility ====
 
-// Store schedule tasks (in case you want to add storage capabilities in the future)
-let scheduleTasks = [];
-
-// Function to toggle between pages (Schedule and Brain Dump)
-function togglePage(page) {
-    document.getElementById('schedule-page').style.display = page === 'schedule' ? 'block' : 'none';
-    document.getElementById('brain-dump-page').style.display = page === 'brain-dump' ? 'block' : 'none';
+function formatDate(date) {
+  return date.toISOString().split("T")[0];
 }
 
-// Show tasks for specific date (Yesterday, Today, Tomorrow, Next 5 Days)
-function showDate(dateType) {
-    let dateDisplay = document.getElementById('date-display');
-    let today = new Date();
-    
-    switch (dateType) {
-        case 'yesterday':
-            today.setDate(today.getDate() - 1);
-            break;
-        case 'today':
-            break;
-        case 'tomorrow':
-            today.setDate(today.getDate() + 1);
-            break;
-        case 'next':
-            today.setDate(today.getDate() + 5);
-            break;
-    }
-    
-    let dateString = today.toDateString();
-    dateDisplay.innerHTML = `Tasks for: ${dateString}`;
-
-    // Here you would ideally filter your tasks based on the date type and show them.
-    console.log(`Showing tasks for: ${dateString}`);
+function getHourLabel(hour) {
+  const suffix = hour >= 12 ? "PM" : "AM";
+  const hr = hour % 12 || 12;
+  return `${hr}:00 ${suffix}`;
 }
 
-// Show Brain Dump Form when "Add Task" button is clicked
-function showBrainDumpForm(category) {
-    document.getElementById('task-form-container').style.display = 'block';
-    document.getElementById('brain-dump-category').value = category;
-}
+// ==== State ====
+let tasks = [];
+let selectedDate = formatDate(new Date());
+let selectedCategory = "all";
+let editingTaskId = null;
 
-// Close Brain Dump Form
-function closeTaskForm() {
-    document.getElementById('task-form-container').style.display = 'none';
-}
+// ==== DOM Elements ====
+const schedulePage = document.getElementById("schedule-page");
+const brainDumpPage = document.getElementById("brain-dump-page");
+const scheduleContainer = document.getElementById("schedule");
+const taskFormContainer = document.getElementById("task-form-container");
+const taskForm = document.getElementById("task-form");
+const dateButtonsContainer = document.getElementById("date-buttons");
+const categoryButtons = document.querySelectorAll(".category-filter button");
+const brainDumpFormContainer = document.getElementById("brain-dump-form-container");
+const brainDumpForm = document.getElementById("brain-dump-form");
 
-// Handle form submission to add a new task to Brain Dump
-document.getElementById('brain-dump-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const title = document.getElementById('brain-dump-title').value;
-    const description = document.getElementById('brain-dump-description').value;
-    const dueDate = document.getElementById('brain-dump-due-date').value;
-    const scheduleTime = document.getElementById('brain-dump-schedule-time').value;
-    const category = document.getElementById('brain-dump-category').value;
-
-    const task = {
-        title,
-        description,
-        dueDate,
-        scheduleTime,
-        category
-    };
-
-    brainDumpTasks[category].push(task);
-    displayBrainDumpTasks(category);
-    addTaskToSchedule(task);
-
-    // Clear form fields
-    document.getElementById('brain-dump-form').reset();
-    closeTaskForm();
+// ==== Page Toggle ====
+document.getElementById("show-schedule").addEventListener("click", () => {
+  schedulePage.classList.add("active");
+  brainDumpPage.classList.remove("active");
+  document.getElementById("show-schedule").classList.add("active");
+  document.getElementById("show-brain-dump").classList.remove("active");
+  renderSchedule();
 });
 
-// Display tasks in the Brain Dump section
-function displayBrainDumpTasks(category) {
-    const taskList = document.getElementById(`${category}-list`);
-    taskList.innerHTML = '';
+document.getElementById("show-brain-dump").addEventListener("click", () => {
+  brainDumpPage.classList.add("active");
+  schedulePage.classList.remove("active");
+  document.getElementById("show-brain-dump").classList.add("active");
+  document.getElementById("show-schedule").classList.remove("active");
+  renderBrainDump();
+});
 
-    brainDumpTasks[category].forEach(task => {
-        const taskElement = document.createElement('li');
-        taskElement.textContent = `${task.title} - ${task.dueDate} at ${task.scheduleTime}`;
-        taskList.appendChild(taskElement);
+// ==== Date Buttons ====
+function setupDateButtons() {
+  dateButtonsContainer.innerHTML = "";
+  for (let offset = -1; offset <= 5; offset++) {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    const btn = document.createElement("button");
+    btn.textContent = `${offset === -1 ? "Yesterday" : offset === 0 ? "Today" : date.toLocaleDateString()}`;
+    btn.dataset.date = formatDate(date);
+    if (formatDate(date) === selectedDate) btn.classList.add("active");
+
+    btn.addEventListener("click", () => {
+      selectedDate = formatDate(date);
+      setupDateButtons();
+      renderSchedule();
     });
+    dateButtonsContainer.appendChild(btn);
+  }
 }
+setupDateButtons();
 
-// Add task to the schedule (based on schedule time)
-function addTaskToSchedule(task) {
-    const scheduleTimeInMinutes = convertTimeToMinutes(task.scheduleTime);
-    const taskElement = document.createElement('div');
-    taskElement.classList.add('task', task.category);
+// ==== Category Filter ====
+categoryButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    categoryButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedCategory = btn.dataset.category;
+    renderSchedule();
+  });
+});
 
-    taskElement.innerHTML = `
-        <strong>${task.title}</strong>
-        <p>${task.description}</p>
-        <small>Due: ${task.dueDate} at ${task.scheduleTime}</small>
-        <input type="checkbox" onclick="markTaskComplete(this)">
-        <button onclick="editTask('${task.title}')">✏️</button>
+// ==== Render Schedule ====
+function renderSchedule() {
+  scheduleContainer.innerHTML = "";
+
+  for (let hour = 0; hour < 24; hour++) {
+    const hourLabel = document.createElement("div");
+    hourLabel.className = "schedule-hour";
+    hourLabel.textContent = getHourLabel(hour);
+    scheduleContainer.appendChild(hourLabel);
+
+    const hourSlot = document.createElement("div");
+    hourSlot.className = "schedule-slot";
+    hourSlot.dataset.hour = hour;
+    scheduleContainer.appendChild(hourSlot);
+  }
+
+  const tasksForDay = tasks.filter(
+    (t) => t.date === selectedDate && (selectedCategory === "all" || t.category === selectedCategory)
+  );
+
+  tasksForDay.forEach((task) => {
+    const start = parseInt(task.startTime.split(":")[0]);
+    const taskDiv = document.createElement("div");
+    taskDiv.className = "task";
+    taskDiv.dataset.category = task.category;
+    taskDiv.innerHTML = `
+      <span>${task.title}</span>
+      <input type="checkbox" ${task.completed ? "checked" : ""}>
+      <button class="edit-btn">✏️</button>
     `;
 
-    // Place the task in the corresponding schedule time slot
-    const taskSlot = document.querySelector(`#schedule-time-${scheduleTimeInMinutes}`);
-    if (taskSlot) {
-        taskSlot.appendChild(taskElement);
+    const hourSlot = document.querySelector(`.schedule-slot[data-hour="${start}"]`);
+    if (hourSlot) {
+      hourSlot.appendChild(taskDiv);
+
+      // Completion toggle
+      taskDiv.querySelector("input").addEventListener("change", (e) => {
+        task.completed = e.target.checked;
+      });
+
+      // Edit button
+      taskDiv.querySelector(".edit-btn").addEventListener("click", () => {
+        openTaskForm(task, true);
+      });
     }
+  });
 }
 
-// Convert time to minutes (helper function)
-function convertTimeToMinutes(time) {
-    const [hours, minutes] = time.split(':');
-    return parseInt(hours) * 60 + parseInt(minutes);
-}
-
-// Mark task as completed (checkbox functionality)
-function markTaskComplete(checkbox) {
-    if (checkbox.checked) {
-        checkbox.parentElement.style.textDecoration = 'line-through';
-    } else {
-        checkbox.parentElement.style.textDecoration = 'none';
-    }
-}
-
-// Edit task (opens task form to edit existing task)
-function editTask(taskTitle) {
-    const task = findTaskByTitle(taskTitle);
-    if (task) {
-        document.getElementById('brain-dump-title').value = task.title;
-        document.getElementById('brain-dump-description').value = task.description;
-        document.getElementById('brain-dump-due-date').value = task.dueDate;
-        document.getElementById('brain-dump-schedule-time').value = task.scheduleTime;
-        document.getElementById('brain-dump-category').value = task.category;
-        document.getElementById('task-form-container').style.display = 'block';
-    }
-}
-
-// Find task by its title (for editing)
-function findTaskByTitle(title) {
-    for (const category in brainDumpTasks) {
-        const task = brainDumpTasks[category].find(task => task.title === title);
-        if (task) return task;
-    }
-    return null;
-}
-
-// Save changes to an edited task
-document.getElementById('brain-dump-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const title = document.getElementById('brain-dump-title').value;
-    const description = document.getElementById('brain-dump-description').value;
-    const dueDate = document.getElementById('brain-dump-due-date').value;
-    const scheduleTime = document.getElementById('brain-dump-schedule-time').value;
-    const category = document.getElementById('brain-dump-category').value;
-
-    const task = {
-        title,
-        description,
-        dueDate,
-        scheduleTime,
-        category
-    };
-
-    // Find and replace the existing task in the appropriate category
-    const index = brainDumpTasks[category].findIndex(t => t.title === title);
-    if (index !== -1) {
-        brainDumpTasks[category][index] = task;
-        displayBrainDumpTasks(category);
-        addTaskToSchedule(task);
-    }
-
-    // Clear form fields
-    document.getElementById('brain-dump-form').reset();
-    closeTaskForm();
+// ==== Task Form ====
+document.getElementById("add-task-btn").addEventListener("click", () => {
+  openTaskForm();
 });
+
+function openTaskForm(task = null, editing = false) {
+  taskFormContainer.style.display = "block";
+  document.getElementById("form-title").textContent = editing ? "Edit Task" : "Add Task";
+
+  if (editing && task) {
+    editingTaskId = task.id;
+    document.getElementById("task-id").value = task.id;
+    document.getElementById("task-title").value = task.title;
+    document.getElementById("task-date").value = task.date;
+    document.getElementById("start-time").value = task.startTime;
+    document.getElementById("end-time").value = task.endTime;
+    document.getElementById("task-category").value = task.category;
+    document.getElementById("task-details").value = task.details;
+  } else {
+    editingTaskId = null;
+    taskForm.reset();
+    document.getElementById("task-date").value = selectedDate;
+  }
+}
+
+taskForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const newTask = {
+    id: editingTaskId || Date.now(),
+    title: document.getElementById("task-title").value,
+    date: document.getElementById("task-date").value,
+    startTime: document.getElementById("start-time").value,
+    endTime: document.getElementById("end-time").value,
+    category: document.getElementById("task-category").value,
+    details: document.getElementById("task-details").value,
+    completed: false,
+  };
+
+  if (editingTaskId) {
+    tasks = tasks.map((t) => (t.id === editingTaskId ? newTask : t));
+  } else {
+    tasks.push(newTask);
+  }
+
+  taskFormContainer.style.display = "none";
+  renderSchedule();
+});
+
+// ==== Brain Dump ====
+
+function openBrainDumpForm(category) {
+  brainDumpFormContainer.style.display = "block";
+  document.getElementById("dump-category").value = category;
+}
+
+brainDumpForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const title = document.getElementById("dump-title").value;
+  const description = document.getElementById("dump-description").value;
+  const dueDate = document.getElementById("dump-due-date").value;
+  const category = document.getElementById("dump-category").value;
+  const scheduleDate = document.getElementById("dump-schedule-date").value;
+  const scheduleStart = document.getElementById("dump-schedule-time").value;
+  const scheduleEnd = document.getElementById("dump-schedule-end").value;
+
+  if (scheduleDate && scheduleStart) {
+    tasks.push({
+      id: Date.now(),
+      title,
+      date: scheduleDate,
+      startTime: scheduleStart,
+      endTime: scheduleEnd || scheduleStart,
+      category,
+      details: description,
+      completed: false,
+    });
+  }
+
+  const dumpDiv = document.querySelector(`.dump-tasks[data-category="${category}"]`);
+  const item = document.createElement("div");
+  item.textContent = `${title} ${dueDate ? `(Due: ${dueDate})` : ""}`;
+  dumpDiv.appendChild(item);
+
+  brainDumpForm.reset();
+  brainDumpFormContainer.style.display = "none";
+  renderSchedule();
+});
+
+function renderBrainDump() {
+  // Tasks already rendered on submission
+}
