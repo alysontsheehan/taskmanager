@@ -213,6 +213,21 @@ button.active {
     content: "🌀";
 }
 
+/* Optional: Adjust spacing between the new form fields */
+#task-form label {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+#task-form input[type="date"],
+#task-form input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #A8DADC;
+    border-radius: 5px;
+}
+
 /* Responsive Layout */
 @media (max-width: 768px) {
     #schedule {
