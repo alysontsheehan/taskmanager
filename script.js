@@ -143,18 +143,27 @@ categoryButtons.forEach(button => {
 
     const category = event.target.dataset.category;
     const tasks = document.querySelectorAll('.dump-tasks');
-    tasks.forEach(taskList => {
-      if (taskList.dataset.category === category || category === 'all') {
+    
+    if (category === 'all') {
+      // Show all tasks if the 'All' category is selected
+      tasks.forEach(taskList => {
         taskList.style.display = 'block';
-      } else {
-        taskList.style.display = 'none';
-      }
-    });
+      });
+    } else {
+      // Filter tasks by category
+      tasks.forEach(taskList => {
+        if (taskList.dataset.category === category) {
+          taskList.style.display = 'block';
+        } else {
+          taskList.style.display = 'none';
+        }
+      });
+    }
   });
 });
 
-// Initialize category to show all tasks by default
-document.querySelector('.category-filter button[data-category="home"]').click();
+// Initialize category to show 'All' tasks by default
+document.querySelector('.category-filter button[data-category="all"]').click();
 
 // Show Task Form in Schedule page
 document.getElementById('add-task-btn').addEventListener('click', () => {
